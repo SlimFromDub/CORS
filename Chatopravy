@@ -1,0 +1,78 @@
+1. Chybějící nebo nesprávná CORS konfigurace v ASP.NET
+
+Váš ASP.NET server musí povolit CORS pro požadavky z konkrétního původu (např. http://localhost). Ve vašem kódu již přidáváte hlavičky CORS, ale máte některé nesrovnalosti. Zkuste aktualizovat váš kód takto:
+Oprava:
+
+protected void Page_Load(object sender, EventArgs e)
+{
+    HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Origin", "http://localhost"); // Povolit localhost
+    HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); // Povolit HTTP metody
+    HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization"); // Povolit specifické hlavičky
+
+    if (Request.HttpMethod == "OPTIONS") 
+    {
+        Response.StatusCode = 200; // Preflight odpověď
+        Response.End();
+    }
+
+    string post = new StreamReader(Request.InputStream).ReadToEnd();
+    string command = ""; // Zpracujte data
+    Response.Clear();
+    Response.ContentType = "application/json; charset=utf-8";
+    Response.Write("{\"status\":\"OK\"}"); // Dummy JSON odpověď
+    Response.End();
+}
+
+2. Chybějící hlavičky při preflight požadavcích
+
+Prohlížeče provádějí před hlavním požadavkem tzv. "preflight request" (metodou OPTIONS). Tyto požadavky musí server správně obsloužit a odpovědět odpovídajícími hlavičkami.
+Co zkontrolovat:
+
+    Ujistěte se, že ASP.NET aplikace odpovídá na požadavky OPTIONS správně.
+
+    Pokud ne, doplňte podporu OPTIONS metod do konfigurace webového serveru nebo handleru (viz výše).
+
+3. Nesoulad mezi hlavičkami v klientském požadavku a serverové odpovědi
+
+Hlavička Content-Type nastavená v fetch musí být povolena na serveru. Zkuste otestovat odstranění Content-Type z klientské stránky, aby se minimalizovaly konflikty:
+Klientská oprava:
+
+async function getInfuxData() {
+    const url = 'http://localhost:64010/Default.aspx/getInfuxData';
+    try {
+        const response = await fetch(url, { method: 'GET' });
+        const data = await response.json();
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('output').textContent = 'Error fetching data';
+    }
+}
+
+4. Chybějící nebo konfliktní CORS konfigurace ve web.config
+
+Hlavičky CORS mohou být také spravovány ve web.config. Váš aktuální web.config má nastavené hlavičky CORS, ale chybí specifikace pro localhost.
+Oprava:
+
+Upravte sekci <customHeaders> v web.config:
+
+<httpProtocol>
+  <customHeaders>
+    <add name="Access-Control-Allow-Origin" value="http://localhost" />
+    <add name="Access-Control-Allow-Methods" value="GET, POST, OPTIONS" />
+    <add name="Access-Control-Allow-Headers" value="Content-Type, Accept, Authorization, X-Requested-With" />
+    <add name="Access-Control-Allow-Credentials" value="true" />
+  </customHeaders>
+</httpProtocol>
+
+5. Testování
+
+Po provedení výše uvedených změn:
+
+    Zkontrolujte, že server správně odpovídá na OPTIONS požadavky.
+
+    Otestujte, zda váš požadavek GET nyní funguje.
+
+    Použijte nástroje jako Developer Tools v prohlížeči (Network panel) k analýze odpovědí.
+
+Pokud problém přetrvává, dejte vědět, a můžeme ladit hlouběji. 😊
