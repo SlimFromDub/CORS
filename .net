@@ -1,0 +1,59 @@
+using Oracle.ManagedDataAccess.Client;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web;
+using System.Dynamic;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
+using System.Xml;
+using System.Threading;
+
+public partial class Login : System.Web.UI.Page
+{
+    OracleCommand command;
+    OracleDataReader dr;
+    Dictionary<string, string> dictionary = new Dictionary<string, string>();
+    string[] pairs;
+
+    DateTime localDate = DateTime.Now;
+
+    static async Task<string> InfluxReadAsync(string command)
+    {
+       
+        return "<XML_HTTP><XML_HTTP_RESPONSE><RETURN_PARAMETERS><STATUS>OK</STATUS></RETURN_PARAMETERS> <TABLES><TABLE> <TEXT>NC Sintern</TEXT><SBEREICH>NC 2500</SBEREICH></TABLE><TABLE> <TEXT>PI Reinraum GZ1</TEXT><SBEREICH>PI 9010</SBEREICH></TABLE><TABLE><TEXT>PI Pressen GZ1</TEXT><SBEREICH>PI 9020</SBEREICH></TABLE><TABLE><TEXT>PI Trennen GZ1</TEXT><SBEREICH>PI 9030</SBEREICH></TABLE><TABLE> <TEXT>PI Schleifen</TEXT><SBEREICH>PI 9050</SBEREICH></TABLE><TABLE><TEXT>PI Entkohlen GZ1</TEXT> <SBEREICH>PI 9060</SBEREICH></TABLE><TABLE><TEXT>PI Entrance</TEXT><SBEREICH>PI 9115</SBEREICH></TABLE><TABLE><TEXT>PI Measurement</TEXT><SBEREICH>PI 9160</SBEREICH></TABLE><TABLE><TEXT>VS Bedrucken</TEXT><SBEREICH>VS 6020</SBEREICH></TABLE><TABLE><TEXT>VS Cutten</TEXT><SBEREICH>VS 6070</SBEREICH></TABLE><TABLE><TEXT>VS EKO</TEXT><SBEREICH>VS 6100</SBEREICH></TABLE><TABLE><TEXT>VS Sintern</TEXT><SBEREICH>VS 6110</SBEREICH></TABLE><TABLE><TEXT>VS Abliefern/Verpacken</TEXT><SBEREICH>VS 6130</SBEREICH></TABLE></TABLES></XML_HTTP_RESPONSE></XML_HTTP>";
+
+    }
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+    HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Origin", "http://InfinityJson.com");
+    HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Headers", "Content-Type");
+
+        string post = new StreamReader(Request.InputStream).ReadToEnd();
+            string command = "";
+
+            Response.Clear();
+            Response.ContentType = "application/json; charset=utf-8";
+            {
+                case "getInfuxData":
+
+                    var fluxQuery =    "from(bucket: \"KepWareExOPC\") \n" +
+                                        "|> range(start: -1h) \n" +
+                                        "|> filter(fn: (r) => r[\"machine\"] =~ /K0001/) \n" +
+                                        "|> keep(columns: [\"_value\", \"_measurement\",\"machine\"]) \n" +
+                                        "|> last() \n" +
+                                        "|> pivot(rowKey: [\"machine\"], columnKey: [\"_measurement\"], valueColumn: \"_value\") \n" +
+                                        "|> group(columns: [\"measurement\"]) \n" +
+                                        "|> yield(name: \"killms\")"; ;
+                    Response.Write(InfluxReadAsync(fluxQuery).GetAwaiter().GetResult());
+                    Response.ContentType = "application/xml; charset=utf-8";
+                    break;
+            }
+            Response.End();
+        }
+    }
+}
