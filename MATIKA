@@ -1,0 +1,85 @@
+Statistická analýza – Závěrečný test – ukázkový test s řešením	
+
+Příjmení a jméno:
+
+
+Celkem je možné získat 50 bodů. Doba testu je 90 minut.
+
+Otevřené otázky (každá za 6 bodů, celkem 36 bodů)
+
+1.	Pokud počítáme směrodatnou odchylku ze 100 stejných hodnot, jakou bude mít sx hodnotu?
+Řešení: Pokud jsou všechny hodnoty stejné, pak je rozptyl roven 0 a tudíž i směrodatná odchylka 𝑠𝑥=0. V souboru dat neexistuje žádné kolísání hodnot.
+
+2.	Vysvětlete rozdíl mezi spojitou a diskrétní náhodnou veličinou, uveďte příklady.
+Řešení: Diskrétní náhodná veličina nabývá jen určitých hodnot, často celých čísel.
+Příklad: počet dětí v rodině, počet chyb v programu.
+Spojitá náhodná veličina může nabývat libovolných hodnot v intervalu reálných čísel.
+Příklad: výška člověka, teplota, čas načtení stránky v sekundách
+
+3.	Pomocí jakého statistického rozdělení byste řešili tento příklad? „V souboru 1000 lidí je 50 leváků. Pokud náhodně bez vracení vybereme 10 lidí, jaká je pravděpodobnost, že mezi nimi nebude žádný levák?“
+Řešení: Použijeme hypergeometrické rozdělení. To se používá, pokud výběr probíhá bez vracení, máme konečný soubor a zajímá nás počet úspěchů v náhodném výběru.
+Zde:
+N = 1000,
+M = 50 (leváci),
+n = 10,
+a hledáme 𝑃(𝑋=0)
+
+4.	Co je to dekompozice časové řady? Proč se provádí? Popište jednotlivé složky.
+Řešení: Dekompozice časové řady znamená rozklad řady na jednodušší složky, které popisují různé aspekty vývoje dat v čase. Provádí se, abychom lépe porozuměli strukturu dat a identifikovali trend, sezónnost, cykličnost a náhodné vlivy.
+Složky časové řady:
+•	Trendová (T) – dlouhodobý vývoj dat (např. rostoucí tržby).
+•	Sezónní (S) – pravidelně se opakující kolísání (např. podle ročních období).
+•	Cyklická (C) – kolísání nad rámec sezónnosti, např. hospodářské cykly.
+•	Náhodná (E) – nepravidelné odchylky způsobené náhodnými vlivy.
+
+5.	Jaký učiníte závěr, pokud v testu dobré shody vyjde p-hodnota 0.26? 
+Řešení: Pokud 𝑝 = 0,26 > 0,05, výsledek není statisticky významný. Nulovou hypotézu o shodě rozdělení nezamítáme. Data neposkytují dostatek důkazů proti nulové hypotéze, tj. pozorované a očekávané rozdělení se statisticky významně neliší.
+
+6.	Co je to tabulka rozdělení četností? K čemu slouží? Uveďte a popište jednotlivé druhy četností.
+Řešení: Tabulka rozdělení četností ukazuje, jak často se jednotlivé hodnoty (nebo intervaly) v souboru dat vyskytují. Slouží k přehlednému shrnutí dat, vizualizaci dat, 
+přípravě dat pro grafy nebo výpočty.
+Druhy četností:
+•	Absolutní četnost – kolikrát se hodnota vyskytla.
+•	Relativní četnost – podíl četnosti na celku (např. 0,25 nebo 25 %).
+•	Kumulativní četnost – součet četností do daného bodu (např. „kolik hodnot je menších než 50“).
+•	Kumulativní relativní četnost – totéž v relativním vyjádření.
+
+
+
+
+ 
+Uzavřené otázky (každá za 2 body, právě jedna správná odpověď, celkem 14 bodů)
+
+1.	Všechny teploty naměřené v lednu v horské meteorologické stanici nabývaly hodnot od -20°C do  -10°C. Rozptyl těchto teplot:
+a)	Bude kladný * 
+b)	Bude záporný
+c)	Nelze vypočítat
+
+2.	K čemu je určen chronologický průměr?
+a)	K výpočtu průměru hodnot stejnorodého ukazatele.
+b)	K výpočtu průměru hodnot intervalového ukazatele.
+c)	K výpočtu průměru hodnot okamžikového ukazatele. * 
+
+3.	Obsahem nulové hypotézy v kontingenční analýze je:
+a)	Lineární nezávislost dvou kvalitativních proměnných. *
+b)	Lineární nezávislost dvou kvantitativních proměnných.
+c)	Lineární závislost dvou kvalitativních proměnných.
+
+4.	95% interval spolehlivosti pro střední hodnotu:
+a)	Obsahuje střední hodnotu výběrového souboru s pravděpodobností 0, 975.
+b)	Obsahuje skutečnou střední hodnotu základního souboru s pravděpodobností 0, 95. *
+c)	Obsahuje skutečnou střední hodnotu výběrového souboru s pravděpodobností 0, 95.
+
+5.	Známe-li rovnici regresní přímky Y = 20,36 – 0,08x, pak:
+a)	korelační koeficient má hodnotu 0,08.
+b)	korelační koeficient je kladný.
+c)	korelační koeficient je záporný. *
+
+6.	Ve firmě pracuje 7 lidí s těmito platy (v tisících Kč): 32, 34, 30, 50, 35, 33, 37. Jaký je medián platu?
+a)	50
+b)	34 *
+c)	40
+7.	Hlavním účelem jednofaktorové analýzy rozptylu (ANOVA) je:
+a)	Porovnat střední hodnoty ve více než dvou skupinách *
+b)	Otestovat závislost dvou spojitých veličin
+c)	Ověřit normalitu dat
